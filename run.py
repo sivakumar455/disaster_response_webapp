@@ -11,7 +11,7 @@ from joblib import dump, load
 from sqlalchemy import create_engine
 
 import nltk
-nltk.download(["punkt","stopwords"])
+nltk.download(["punkt","stopwords","wordnet"])
 
 #from disapp import app
 from utils.utils import tokenize
