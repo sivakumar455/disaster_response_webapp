@@ -10,6 +10,9 @@ import plotly.graph_objs as goo
 from joblib import dump, load
 from sqlalchemy import create_engine
 
+import nltk
+nltk.download(["punkt","stopwords"])
+
 #from disapp import app
 from utils.utils import tokenize
 
@@ -24,7 +27,6 @@ df = pd.read_sql_table('DisasterResponse', engine)
 #print(df.head())
 
 # load model
-model = load("disaster.pkl") #.set_params(n_jobs=1)
 
 
 # index webpage displays cool visuals and receives user input text for model
@@ -75,9 +77,10 @@ def go():
     query = request.args.get('query', '') 
     #print(query)
     # use model to predict classification for query
+    model = load("disaster.pkl")
     classification_labels = model.predict([query])[0]
     classification_results = dict(zip(df.columns[4:], classification_labels))
-    print(classification_results)
+    #print(classification_results)
 
     # This will render the go.html Please see that file. 
     return render_template(
@@ -87,5 +90,4 @@ def go():
     )
 
 
-
-#app.run(host='localhost', port=3001, debug=True)
+app.run(host='localhost', port=3001, debug=True)
