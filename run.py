@@ -27,7 +27,7 @@ df = pd.read_sql_table('DisasterResponse', engine)
 #print(df.head())
 
 # load model
-
+model = load("disaster.pkl")
 
 # index webpage displays cool visuals and receives user input text for model
 @app.route('/')
@@ -77,7 +77,6 @@ def go():
     query = request.args.get('query', '') 
     #print(query)
     # use model to predict classification for query
-    model = load("disaster.pkl")
     classification_labels = model.predict([query])[0]
     classification_results = dict(zip(df.columns[4:], classification_labels))
     #print(classification_results)
