@@ -22,12 +22,13 @@ app = Flask(__name__)
 
 # load data
 engine = create_engine('sqlite:///DisasterResponse.db')
-df = pd.read_sql_table('DisasterResponse', engine)
+#df = pd.read_sql_table('DisasterResponse', engine)
 
 #print(df.head())
 
 # load model
-model = load("disaster.pkl")
+#model = load("disaster.pkl")
+
 
 # index webpage displays cool visuals and receives user input text for model
 @app.route('/')
@@ -35,12 +36,12 @@ model = load("disaster.pkl")
 def index():
     
     # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
+    
+    df = pd.read_sql_table('DisasterResponse', engine)
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
     
     # create visuals
-    # TODO: Below is an example - modify to create your own visuals
     graphs = [
         {
             'data': [
@@ -76,6 +77,10 @@ def go():
     # save user input in query
     query = request.args.get('query', '') 
     #print(query)
+    
+    df = pd.read_sql_table('DisasterResponse', engine)
+    model = load("disaster.pkl")
+
     # use model to predict classification for query
     classification_labels = model.predict([query])[0]
     classification_results = dict(zip(df.columns[4:], classification_labels))
@@ -87,6 +92,7 @@ def go():
         query=query,
         classification_result=classification_results
     )
+
 
 
 #app.run(host='localhost', port=3001, debug=True)
